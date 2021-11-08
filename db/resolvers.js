@@ -1,3 +1,5 @@
+const Usuario = require('../models/Usuario');
+
 
 
 // RESOLVERS
@@ -7,10 +9,29 @@ const resolvers = {
     obtenerCursos: () => "Hola mundo!!"
   },
   Mutation: {
-    nuevoUsuario: (_, { input }) => {
-      console.log(input);
+    nuevoUsuario: async (_, { input }) => {
 
-      return "Creando..."      
+      const { email, password } = input;
+      
+      // REVISAR SI EL USUARIO ESTA REGITRADO
+      const existeUsuario = await Usuario.findOne({email});
+      if (existeUsuario) {
+        throw new Error('El usuario ya esta registrado');
+      }
+      
+
+      // HASHEAR SU PASSWORD
+
+      try {
+        // GUARDARLO EN LA BASE DE DATOS
+        const usuario = new Usuario(input);
+        usuario.save(); // guardarlo
+        return usuario;
+      } catch (error) {
+        console.log(error);        
+      }
+
+      
     }
   }
 }
