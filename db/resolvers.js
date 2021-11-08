@@ -7,7 +7,11 @@ const resolvers = {
     obtenerCursos: () => "Hola mundo!!"
   },
   Mutation: {
-    nuevoUsuario: () => "Creando nuevo usuario"
+    nuevoUsuario: (_, { input }) => {
+      console.log(input);
+
+      return "Creando..."      
+    }
   }
 }
 
