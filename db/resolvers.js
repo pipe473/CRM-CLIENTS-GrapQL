@@ -1,5 +1,15 @@
 const Usuario = require('../models/Usuario');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config({ path: 'conf.env' });
+
+const crearToken = ( usuario, secreta, expiresIn ) => {
+  // console.log(usuario);
+  const { id, email, nombre, apellido} = usuario;
+
+  return jwt.sign({ id, email, nombre, apellido }, secreta, { expiresIn } )
+}
 
 
 // RESOLVERS
@@ -35,6 +45,27 @@ const resolvers = {
       }
 
       
+    },
+    autenticarUsuario: async (_, {input}) =>{
+
+      const { email, password } = input;
+
+      // SI EL USUARIO EXISTE
+      const existeUsuario = await Usuario.findOne({email});
+      if (!existeUsuario){
+        throw new Error('El usuario no existe');
+      }
+
+      // REVISAR SI EL PASSWORD ES CORRECTO
+      const passwordCorrecto = await bcrypt.compare( password, existeUsuario.password );
+      if(!passwordCorrecto) {
+        throw new Error('El Password es incorrecto');
+      }
+
+      // CREAR EL TOKEN
+      return{
+        token: crearToken( existeUsuario, process.env.SECRETA, '24h' )
+      }
     }
   }
 }
