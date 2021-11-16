@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const ProductSchema = mongoose.Schema({
-    nombre:{
+    nombre: {
         type: String,
         required: true,
         trim: true
@@ -13,11 +13,15 @@ const ProductSchema = mongoose.Schema({
         trim: true
     },
     // precio
-    price:{
+    price: {
         type: Number,
         required: true,
         trim: true
+    },
+    creado: {
+        type: Date,
+        default: Date.now()
     }
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Producto', ProductSchema);
