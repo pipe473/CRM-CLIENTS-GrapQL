@@ -104,6 +104,19 @@ const resolvers = {
         } catch (error) {
           console.log(error);          
         }
+    },
+    actualizarProducto: async (_, {id, input}) => {
+      // Revisar si el producto existe
+      let producto = await Producto.findById(id);
+
+      if (!producto) {
+        throw new Error('Producto no encontrado');
+      }
+
+      // guardarlo en la db
+      producto = await Producto.findByIdAndUpdate({ _id : id }, input, { new: true } );
+
+      return producto;
     }
   }
 }
