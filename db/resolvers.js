@@ -22,7 +22,16 @@ const resolvers = {
       const usuarioId = await jwt.verify(token, process.env.SECRETA );
 
       return usuarioId;
-    } 
+    },
+    obtenerProductos: async () => {
+      try {
+        const mostrarProductos = await Producto.find({});
+
+        return mostrarProductos;
+      } catch (error) {
+        console.log(error);        
+      }
+    }
   },
   Mutation: {
     nuevoUsuario: async (_, { input }) => {
