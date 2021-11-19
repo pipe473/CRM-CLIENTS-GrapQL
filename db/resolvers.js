@@ -132,7 +132,9 @@ const resolvers = {
 
       return "Producto eliminado correctamente";
     },
-    newCustomer: async(_, { input }) => {
+    newCustomer: async(_, { input }, ctx) => {
+
+      console.log(ctx);      
 
       const { email } = input;
       // VERIFICAR SI EL CLIENTE YA ESTA REGISTRADO
@@ -145,7 +147,7 @@ const resolvers = {
       const nuevoCliente = new CustomerData(input);
 
       // ASIGNAR EL VENDEDOR
-      nuevoCliente.vendedor = "61897e3f0ffe7db6426eb78a";
+      nuevoCliente.vendedor = ctx.usuario.id;
 
       // GUARDARLO EN LA DB
 
