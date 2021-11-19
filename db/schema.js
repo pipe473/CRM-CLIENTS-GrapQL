@@ -22,7 +22,7 @@ const typeDefs = gql `
         creado: String
     }
 
-    type Cliente {
+    type Customer {
         id: ID
         nombre: String
         apellido: String
@@ -48,7 +48,7 @@ const typeDefs = gql `
         stock: Int!
         price: Float!
     }
-    input ClienteInput {
+    input CustomerInput {
         nombre: String!
         apellido: String!
         empresa: String!
@@ -76,7 +76,7 @@ const typeDefs = gql `
         eliminarProducto( id: ID!) : String
 
         # Clientes
-        nuevoCliente(input: ClienteInput) : Cliente
+        newCustomer(input: CustomerInput) : Customer
     }
     
 `;
