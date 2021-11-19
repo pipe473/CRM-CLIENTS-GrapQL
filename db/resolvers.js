@@ -42,6 +42,14 @@ const resolvers = {
       }
 
       return productFound;
+    },
+    getCustomers: async() => {
+      try {
+        const clientes = await CustomerData.find({});
+        return clientes;
+      } catch (error) {
+        console.log(error);        
+      }
     }
   },
   Mutation: {

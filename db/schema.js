@@ -56,6 +56,8 @@ const typeDefs = gql `
         telefono: String
     }
 
+
+
     type Query {
        # Usuarios
        obtenerUsuario(token: String!) : Usuario
@@ -63,6 +65,9 @@ const typeDefs = gql `
        # Productos
        obtenerProductos: [Producto]
        getProductById(id: ID!) : Producto
+
+       # Clientes
+       getCustomers: [Customer]
     }
 
     type Mutation {
