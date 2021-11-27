@@ -68,6 +68,7 @@ const typeDefs = gql `
 
        # Clientes
        getCustomers: [Customer]
+       getCustomerSeller: [Customer]
     }
 
     type Mutation {

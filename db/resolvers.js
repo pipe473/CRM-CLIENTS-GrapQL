@@ -50,6 +50,14 @@ const resolvers = {
       } catch (error) {
         console.log(error);        
       }
+    },
+    getCustomerSeller: async(_, {}, ctx ) => {
+      try {
+        const clientes = await CustomerData.find({ seller: ctx.usuario.id.toString() });
+        return clientes;
+      } catch (error) {
+        console.log(error);        
+      }
     }
   },
   Mutation: {
@@ -165,11 +173,6 @@ const resolvers = {
       } catch (error) {
         console.log(error);        
       }
-
-    
-
-
-
     }
   }
 }
