@@ -58,6 +58,20 @@ const resolvers = {
       } catch (error) {
         console.log(error);        
       }
+    },
+    getCustomer: async(_, { id }, ctx ) => {
+      //REVISAR SI EXISTE UN CLIENTE O NO
+       const cliente = await CustomerData.findById(id);
+       if(!cliente) {
+         throw new Error('Cliente no encontrado...');
+       }
+      //QUE EL CLIENTE LO PUEDA VER SOLO QUIEN LO CREO
+      if(cliente.vendedor.toString() !== ctx.usuario.id ) {
+        throw new Error('No estas autorizado para ver este cliente');
+      }
+
+      return cliente;
+
     }
   },
   Mutation: {
