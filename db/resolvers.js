@@ -164,7 +164,7 @@ const resolvers = {
     },
     newCustomer: async(_, { input }, ctx) => {
 
-      console.log(ctx);      
+      // console.log(ctx);      
 
       const { email } = input;
       // VERIFICAR SI EL CLIENTE YA ESTA REGISTRADO
@@ -187,6 +187,23 @@ const resolvers = {
       } catch (error) {
         console.log(error);        
       }
+    },
+    updateCustomer: async(_, {id, input}, ctx) => {
+      // Verificar si existe o no
+      let cliente = await CustomerData.findById(id);
+
+      if(!cliente) {
+        throw new Error('Este cliente no existe!');
+      }
+
+      //Verificar si el vendedor es quien edita
+      if(cliente.vendedor.toString() !== ctx.usuario.id ){
+        throw new Error('No tienes credenciales');
+      }
+
+      // Guardar al cliente
+      cliente = await CustomerData.findOneAndUpdate({_id: id}, input, {new: true} );
+      return cliente;
     }
   }
 }

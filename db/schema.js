@@ -84,6 +84,7 @@ const typeDefs = gql `
 
         # Clientes
         newCustomer(input: CustomerInput) : Customer
+        updateCustomer(id: ID!, input: CustomerInput): Customer
     }
     
 `;
