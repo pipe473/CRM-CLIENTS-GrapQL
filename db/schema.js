@@ -32,6 +32,21 @@ const typeDefs = gql `
         vendedor: ID
     }
 
+    type Order {
+        id: ID
+        pedido: [PedidoGrupo]
+        total: Float
+        cliente: ID
+        vendedor: ID
+        fecha: String
+        estado: EstadoPedido
+    }
+
+    type PedidoGrupo {
+        id: ID
+        quantity: Int
+    }
+
     input UsuarioInput {
         nombre: String!
         apellido: String!
@@ -54,6 +69,24 @@ const typeDefs = gql `
         empresa: String!
         email: String!
         telefono: String
+    }
+
+    input OrderProductInput {
+        id: ID
+        quantity: Int
+    }
+
+    input OrderInput {
+        order: [OrderProductInput]
+        total: Float!
+        cliente: ID!
+        estado: EstadoPedido
+    }
+
+    enum EstadoPedido {
+        PENDING
+        COMPLETE
+        CANCELED
     }
 
 
@@ -86,6 +119,9 @@ const typeDefs = gql `
         newCustomer(input: CustomerInput) : Customer
         updateCustomer(id: ID!, input: CustomerInput): Customer
         deleteCustomer(id: ID!) : String
+
+        #Orders
+        newOrder(input: OrderInput) : Order
     }
     
 `;
