@@ -221,7 +221,44 @@ const resolvers = {
        // Eliminar cliente
        await CustomerData.findOneAndDelete({_id : id});
        return "Cliente eliminado correctamente!!"
+    },
+    newOrder: async (_, {input}, ctx) => {
+      const { cliente } = input;
+
+       // Verificar si el cliente existe o no
+       let clienteExiste = await CustomerData.findById(cliente);
+
+       if(!clienteExiste) {
+         throw new Error('Este cliente no existe');
+       }
+
+        // Verificar si el cliente es del vendedor
+        if(clienteExiste.vendedor.toString() !== ctx.usuario.id ) {
+          throw new Error('No tienes credenciales para acceder a los datos de este cliente');
+        }
+
+        // Verificar que el stock este disponible
+
+       for await ( const articulo of input.order ) {
+          const { id } = articulo;
+          
+          const producto = await Producto.findById(id);
+
+          if(articulo.quantity > producto.stock) {
+            throw new Error(`El articulo ${producto.nombre} excede la cantidad disponible`);
+          }          
+        }
+
+        console.log('Deespues del error...');
+        
+
+        // console.log(input.order);
+        
+
+
+        // Asignarle a un vendedor
     }
+
   }
 }
 

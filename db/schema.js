@@ -35,8 +35,8 @@ const typeDefs = gql `
     type Order {
         id: ID
         pedido: [PedidoGrupo]
-        total: Float
-        cliente: ID
+        total: Float!
+        cliente: ID!
         vendedor: ID
         fecha: String
         estado: EstadoPedido
