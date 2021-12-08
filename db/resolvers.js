@@ -248,17 +248,29 @@ const resolvers = {
 
           if(articulo.quantity > producto.stock) {
             throw new Error(`El articulo ${producto.nombre} excede la cantidad disponible`);
-          }          
+          }  else {
+            // Restar la cantidad  a lo disponible en stock
+            producto.stock = producto.stock - articulo.quantity;
+
+            await producto.save();
+          }        
         }
 
-        console.log('Deespues del error...');
+        // console.log('Deespues del error...');
         
 
-        // console.log(input.order);
-        
+        // Crear un nuevo pedido
+        const nuevoPedido = new Order(input);        
 
 
         // Asignarle a un vendedor
+        nuevoPedido.vendedor = ctx.usuario.id;
+
+
+        // Guardarlo en la base de datos
+        const resultado = await nuevoPedido.save();
+        return resultado;
+
     }
 
   }
