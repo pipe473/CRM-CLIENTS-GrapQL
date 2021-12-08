@@ -20,6 +20,7 @@ const crearToken = ( usuario, secreta, expiresIn ) => {
 // RESOLVERS
 
 const resolvers = {
+
   Query: {
     obtenerUsuario: async(_, { token }) =>{
       const usuarioId = await jwt.verify(token, process.env.SECRETA );
@@ -73,7 +74,22 @@ const resolvers = {
       }
 
       return cliente;
-
+    },
+    getOrders: async () => {
+      try {
+        const misPedidos = await Order.find({});
+        return misPedidos;
+      } catch (error) {
+        console.log(error);        
+      }
+    },
+    getOrdersBySeller: async (_, {}, ctx) => {
+      try {
+        const pedidos = await Order.find({ vendedor: ctx.usuario.id });
+        return pedidos;
+      } catch (error) {
+        console.log(error);        
+      }
     }
   },
   Mutation: {
@@ -255,9 +271,6 @@ const resolvers = {
             await producto.save();
           }        
         }
-
-        // console.log('Deespues del error...');
-        
 
         // Crear un nuevo pedido
         const nuevoPedido = new Order(input);        
