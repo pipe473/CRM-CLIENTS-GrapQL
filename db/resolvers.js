@@ -339,8 +339,8 @@ const resolvers = {
 
       // Guardar el pedido
       const resultado = await Order.findByIdAndUpdate({_id: id}, input, { new: true });
-      // return resultado;
-      console.log(resultado);
+      return resultado;
+      // console.log(resultado);
       
     }
   }
