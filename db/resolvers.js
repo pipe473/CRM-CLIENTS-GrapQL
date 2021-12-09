@@ -322,25 +322,26 @@ const resolvers = {
       }
 
       // Revisar el stock
-      for await ( const articulo of input.order ) {
-        const { id } = articulo;
-        
-        const producto = await Producto.findById(id);
-
-        if(articulo.quantity > producto.stock) {
-          throw new Error(`El articulo ${producto.nombre} excede la cantidad disponible`);
-        }  else {
-          // Restar la cantidad  a lo disponible en stock
-          producto.stock = producto.stock - articulo.quantity;
-
-          await producto.save();
-        }        
+      if( input.pedidos ) {
+        for await ( const articulo of input.order ) {
+          const { id } = articulo;
+          
+          const producto = await Producto.findById(id);
+  
+          if(articulo.quantity > producto.stock) {
+            throw new Error(`El articulo ${producto.nombre} excede la cantidad disponible`);
+          }  else {
+            // Restar la cantidad  a lo disponible en stock
+            producto.stock = producto.stock - articulo.quantity;
+  
+            await producto.save();
+          }        
+        }
       }
 
       // Guardar el pedido
       const resultado = await Order.findByIdAndUpdate({_id: id}, input, { new: true });
       return resultado;
-      // console.log(resultado);
       
     }
   }
