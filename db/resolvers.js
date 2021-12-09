@@ -300,8 +300,49 @@ const resolvers = {
         const resultado = await nuevoPedido.save();
         return resultado;
 
-    }
+    },
+    updateOrder: async(_, {id, input}, ctx) => {
+      const { cliente } = input;
 
+      // Verificar si el pedido existe
+      const existePedido = await Order.findById(id);
+      if(!existePedido) {
+        throw new Error('El pedido no existe!');
+      }
+
+      // Verificar si el cliente existe
+      const existeCliente = await CustomerData.findById(cliente);
+      if(!existeCliente) {
+        throw new Error('El cliente no existe!');
+      }
+
+      // verificar si el cliente y pedido pertenece al vendedor
+      if(existeCliente.vendedor.toString() !== ctx.usuario.id ) {
+        throw new Error('')
+      }
+
+      // Revisar el stock
+      for await ( const articulo of input.order ) {
+        const { id } = articulo;
+        
+        const producto = await Producto.findById(id);
+
+        if(articulo.quantity > producto.stock) {
+          throw new Error(`El articulo ${producto.nombre} excede la cantidad disponible`);
+        }  else {
+          // Restar la cantidad  a lo disponible en stock
+          producto.stock = producto.stock - articulo.quantity;
+
+          await producto.save();
+        }        
+      }
+
+      // Guardar el pedido
+      const resultado = await Order.findByIdAndUpdate({_id: id}, input, { new: true });
+      // return resultado;
+      console.log(resultado);
+      
+    }
   }
 }
 

@@ -21,7 +21,7 @@ const ProductoSchema = mongoose.Schema({
         ref: 'Usuario'
     },
     //estado
-    estate: {
+    estado: {
         type: String,
         default: "PENDIENTE"
     },
