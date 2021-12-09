@@ -322,7 +322,7 @@ const resolvers = {
       }
 
       // Revisar el stock
-      if( input.pedidos ) {
+      if( input.order ) {
         for await ( const articulo of input.order ) {
           const { id } = articulo;
           
@@ -343,6 +343,21 @@ const resolvers = {
       const resultado = await Order.findByIdAndUpdate({_id: id}, input, { new: true });
       return resultado;
       
+    },
+    deleteOrder: async(_, { id }, ctx ) => {
+      // Verificar si el pedido existe o no
+      const pedido = await Order.findById(id);
+      if(!pedido) {
+        throw new Error('El pedido no existe...')
+      }
+
+      // Verificar si el vendedor es quien lo borra
+      if(pedido.vendedor.toString() !== ctx.usuario.id) {
+        throw new Error('No tienes las credenciales necesarias!');
+      }
+      // Eliminar de la base de datos
+      await Order.findOneAndDelete({_id: id});
+      return 'Pedido eliminado correctamente!!'
     }
   }
 }
