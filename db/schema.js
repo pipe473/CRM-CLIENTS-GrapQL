@@ -123,6 +123,7 @@ const typeDefs = gql `
        #Busquedas avanzadas
        mejoresClientes: [TopCliente]
        mejoresVendedores: [TopVendedor]
+       searchProduct(text: String!) : [Producto]
     }
 
     type Mutation {
