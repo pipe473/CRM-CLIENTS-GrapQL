@@ -128,12 +128,39 @@ const resolvers = {
           }
         },
         {
+          $limit: 10
+        },
+        {
           $sort : { total : -1 }
         }
       ]);
 
       return clientes;
 
+    },
+    mejoresVendedores: async() => {
+      const vendedores = await Order.aggregate([
+        { $match : { estado: "COMPLETE" }},
+        { $group: {
+          _id: "$vendedor",
+          total: { $sum : "$total"}
+        }},
+        {
+          $lookup: {
+            from: 'usuarios',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'vendedor'
+          }
+        },
+          {
+            $limit: 3
+          },
+          {
+            $sort: { total : -1 }
+          }      
+      ]);
+      return vendedores;
     }
   },
   Mutation: {

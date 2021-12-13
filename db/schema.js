@@ -52,6 +52,10 @@ const typeDefs = gql `
         total: Float
         cliente: [Customer]
     }
+    type TopVendedor {
+        total: Float
+        vendedor: [Usuario]
+    }
 
     input UsuarioInput {
         nombre: String!
@@ -118,6 +122,7 @@ const typeDefs = gql `
 
        #Busquedas avanzadas
        mejoresClientes: [TopCliente]
+       mejoresVendedores: [TopVendedor]
     }
 
     type Mutation {
