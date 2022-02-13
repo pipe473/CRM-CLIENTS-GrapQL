@@ -57,6 +57,8 @@ const resolvers = {
     getCustomerSeller: async(_, {}, ctx ) => {
       try {
         const clientes = await CustomerData.find({ seller: ctx.usuario.id.toString() });
+        // console.log(clientes);
+        
         return clientes;
       } catch (error) {
         console.log(error);        
