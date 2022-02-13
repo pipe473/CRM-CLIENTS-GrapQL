@@ -10,6 +10,7 @@
     "author": "Felipe Bedoya",
     "license": "ISC",
     "dependencies": {
+        "apollo-link-context": "^1.0.20",
         "apollo-server": "^3.4.0",
         "bcryptjs": "^2.4.3",
         "dotenv": "^10.0.0",
